@@ -66,8 +66,8 @@ echo "🎯 Enabling service..."
 systemctl daemon-reload
 systemctl enable mcp-sse
 
-# Get server IP
-SERVER_IP=$(curl -s ifconfig.me)
+# Get server IPv4 address
+SERVER_IP=$(curl -s -4 ifconfig.me)
 
 echo "✅ Deployment complete!"
 echo ""
