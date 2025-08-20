@@ -135,13 +135,9 @@ class MCPSSETransport:
         """Run the SSE server"""
         uvicorn.run(self.app, host=host, port=port)
 
-async def main_sse():
-    """Run MCP server with SSE transport"""
+def run_sse():
+    """Entry point for SSE transport"""
     from .__main__ import mcp
     
     sse_transport = MCPSSETransport(mcp)
     sse_transport.run()
-
-def run_sse():
-    """Entry point for SSE transport"""
-    asyncio.run(main_sse())
