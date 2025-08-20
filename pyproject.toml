@@ -33,6 +33,8 @@ dependencies = [
     "jsonschema",
     "requests",
     "cryptography",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.22.0",
 ]
 
 [project.optional-dependencies]
@@ -50,6 +52,7 @@ dev = [
 [project.scripts]
 fpl-mcp = "fpl_mcp.__main__:main"
 fpl-mcp-config = "fpl_mcp.cli:main"
+fpl-mcp-sse = "fpl_mcp.sse_transport:run_sse"
 
 [project.urls]
 Homepage = "https://github.com/rishijatia/fantasy-pl-mcp"
