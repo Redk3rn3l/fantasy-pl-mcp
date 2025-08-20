@@ -35,6 +35,7 @@ dependencies = [
     "cryptography",
     "fastapi>=0.100.0",
     "uvicorn>=0.22.0",
+    "httpx>=0.24.0",
 ]
 
 [project.optional-dependencies]
@@ -56,6 +57,7 @@ fpl-mcp-sse = "fpl_mcp.sse_transport:run_sse"
 fpl-mcp-stdio = "fpl_mcp.stdio_server:run_stdio"
 fpl-mcp-tcp = "fpl_mcp.tcp_bridge:run_tcp_bridge"
 fpl-mcp-http = "fpl_mcp.http_mcp_server:run_http_server"
+fpl-mcp-n8n = "fpl_mcp.n8n_bridge:run_n8n_bridge"
 
 [project.urls]
 Homepage = "https://github.com/rishijatia/fantasy-pl-mcp"
