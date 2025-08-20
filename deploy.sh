@@ -31,14 +31,9 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -e .
 
-# Create environment file template
-echo "⚙️ Creating environment template..."
-cat > .env << 'EOF'
-# FPL Credentials
-FPL_EMAIL=
-FPL_PASSWORD=
-FPL_TEAM_ID=
-EOF
+# Create empty environment file (credentials will come from frontend)
+echo "⚙️ Creating environment file..."
+touch .env
 
 # Create systemd service
 echo "🔄 Creating system service..."
@@ -72,9 +67,9 @@ SERVER_IP=$(curl -s -4 ifconfig.me)
 echo "✅ Deployment complete!"
 echo ""
 echo "📝 Next steps:"
-echo "1. Edit /opt/mcp-server/.env with your FPL credentials"
-echo "2. Start service: systemctl start mcp-sse"
-echo "3. Check status: systemctl status mcp-sse"
+echo "1. Start service: systemctl start mcp-sse"
+echo "2. Check status: systemctl status mcp-sse"
+echo "3. FPL credentials are passed dynamically from frontend when needed"
 echo ""
 echo "🌐 Server endpoints are available at:"
 echo "   Health: http://${SERVER_IP}:8000/health"

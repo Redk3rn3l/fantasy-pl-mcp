@@ -61,6 +61,29 @@
 }
 ```
 
+### Call Tool with FPL Credentials (when needed)
+```json
+{
+  "method": "POST",
+  "url": "http://YOUR_SERVER_IP:8000/mcp/call",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "method": "tools/call",
+    "params": {
+      "name": "TOOL_NAME",
+      "arguments": {}
+    },
+    "credentials": {
+      "email": "user@example.com",
+      "password": "user_password",
+      "team_id": "user_team_id"
+    }
+  }
+}
+```
+
 ## Resource Access
 
 ### Read Any Resource

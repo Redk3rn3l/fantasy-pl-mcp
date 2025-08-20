@@ -64,6 +64,17 @@ class MCPSSETransport:
                 body = await request.json()
                 method = body.get("method")
                 params = body.get("params", {})
+                credentials = body.get("credentials", {})  # Optional credentials from frontend
+                
+                # Set credentials temporarily if provided
+                if credentials:
+                    import os
+                    if credentials.get("email"):
+                        os.environ["FPL_EMAIL"] = credentials["email"]
+                    if credentials.get("password"):
+                        os.environ["FPL_PASSWORD"] = credentials["password"]
+                    if credentials.get("team_id"):
+                        os.environ["FPL_TEAM_ID"] = str(credentials["team_id"])
                 
                 if method == "resources/list":
                     result = await self.mcp_server.list_resources()
