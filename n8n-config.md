@@ -1,6 +1,19 @@
 # n8n Configuration for MCP Server
 
-## Basic Setup
+## MCP Client Node Setup
+
+### Option 1: Direct MCP Protocol (Recommended)
+
+**MCP Client Node Configuration:**
+- **Server Command**: `/opt/mcp-server/venv/bin/fpl-mcp-stdio`
+- **Server Arguments**: (leave empty)
+- **Authentication**: None
+
+**Alternative Server Commands:**
+- `/opt/mcp-server/venv/bin/python`
+- **Arguments**: `-m fpl_mcp.stdio_server`
+
+### Option 2: HTTP API (if MCP Client doesn't work)
 
 ### 1. SSE Node (for connection monitoring)
 ```json
