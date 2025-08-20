@@ -1,17 +1,23 @@
 # n8n Configuration for MCP Server
 
-## MCP Client Node Setup
+## MCP Client Node Setup (RECOMMENDED)
 
-### Option 1: Direct MCP Protocol (Recommended)
+### Direct MCP Protocol Configuration
 
-**MCP Client Node Configuration:**
+**Step 1: Update your Linode server**
+```bash
+# Run this on your Linode server (172.105.168.35)
+cd /opt/mcp-server && bash update-server.sh
+```
+
+**Step 2: Configure n8n MCP Client Node**
+- **Node Type**: MCP Client (not SSE!)
 - **Server Command**: `/opt/mcp-server/venv/bin/fpl-mcp-stdio`
 - **Server Arguments**: (leave empty)
-- **Authentication**: None
+- **Environment Variables**: (leave empty)
+- **Working Directory**: (leave empty)
 
-**Alternative Server Commands:**
-- `/opt/mcp-server/venv/bin/python`
-- **Arguments**: `-m fpl_mcp.stdio_server`
+**This replaces the SSE endpoint configuration and uses pure MCP protocol!**
 
 ### Option 2: HTTP API (if MCP Client doesn't work)
 

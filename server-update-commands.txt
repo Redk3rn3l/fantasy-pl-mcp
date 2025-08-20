@@ -1,0 +1,49 @@
+## Run these commands on your Linode server (172.105.168.35)
+
+# 1. Navigate to server directory
+cd /opt/mcp-server
+
+# 2. Stop existing services
+systemctl stop mcp-sse 2>/dev/null || true
+
+# 3. Pull latest changes from GitHub
+git pull origin main
+
+# 4. Reinstall package with new stdio entry point
+venv/bin/pip install -e .
+
+# 5. Create stdio systemd service
+cat > /etc/systemd/system/mcp-stdio.service << 'EOF'
+[Unit]
+Description=FPL MCP Server (stdio)
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/mcp-server
+Environment=PATH=/opt/mcp-server/venv/bin
+EnvironmentFile=/opt/mcp-server/.env
+ExecStart=/opt/mcp-server/venv/bin/fpl-mcp-stdio
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# 6. Reload systemd and enable service
+systemctl daemon-reload
+systemctl enable mcp-stdio
+
+# 7. Start the stdio service
+systemctl start mcp-stdio
+
+# 8. Check service status
+systemctl status mcp-stdio
+
+# 9. Test the stdio command
+/opt/mcp-server/venv/bin/fpl-mcp-stdio --help
+
+echo "✅ Stdio MCP server ready!"
+echo "Configure n8n MCP Client with: /opt/mcp-server/venv/bin/fpl-mcp-stdio"

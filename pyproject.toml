@@ -54,6 +54,7 @@ fpl-mcp = "fpl_mcp.__main__:main"
 fpl-mcp-config = "fpl_mcp.cli:main"
 fpl-mcp-sse = "fpl_mcp.sse_transport:run_sse"
 fpl-mcp-stdio = "fpl_mcp.stdio_server:run_stdio"
+fpl-mcp-tcp = "fpl_mcp.tcp_bridge:run_tcp_bridge"
 
 [project.urls]
 Homepage = "https://github.com/rishijatia/fantasy-pl-mcp"
