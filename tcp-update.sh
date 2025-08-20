@@ -7,8 +7,12 @@ echo "🔄 Adding TCP bridge for remote n8n connection..."
 
 cd /opt/mcp-server
 
-# Pull latest changes
+# Always pull latest changes first
+echo "📥 Pulling latest changes from GitHub..."
 git pull origin main
+
+# Reinstall package with latest changes
+echo "📦 Installing latest package..."
 venv/bin/pip install -e .
 
 # Stop old stdio service (we'll use TCP bridge instead)
