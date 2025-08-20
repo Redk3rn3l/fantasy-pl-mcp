@@ -5,7 +5,7 @@
 ### 1. SSE Node (for connection monitoring)
 ```json
 {
-  "url": "http://172.105.168.35:8000/mcp/stream",
+  "url": "http://YOUR_SERVER_IP:8000/mcp/stream",
   "options": {
     "reconnect": true,
     "reconnectInterval": 5000
@@ -17,7 +17,7 @@
 ```json
 {
   "method": "POST",
-  "url": "http://172.105.168.35:8000/mcp/call",
+  "url": "http://YOUR_SERVER_IP:8000/mcp/call",
   "headers": {
     "Content-Type": "application/json"
   },
@@ -31,7 +31,7 @@
 ```json
 {
   "method": "POST", 
-  "url": "http://172.105.168.35:8000/mcp/call",
+  "url": "http://YOUR_SERVER_IP:8000/mcp/call",
   "headers": {
     "Content-Type": "application/json"
   },
@@ -47,7 +47,7 @@
 ```json
 {
   "method": "POST",
-  "url": "http://172.105.168.35:8000/mcp/call",
+  "url": "http://YOUR_SERVER_IP:8000/mcp/call",
   "headers": {
     "Content-Type": "application/json"
   },
@@ -67,7 +67,7 @@
 ```json
 {
   "method": "POST",
-  "url": "http://172.105.168.35:8000/mcp/call", 
+  "url": "http://YOUR_SERVER_IP:8000/mcp/call", 
   "headers": {
     "Content-Type": "application/json"
   },
@@ -84,7 +84,7 @@
 ```json
 {
   "method": "GET",
-  "url": "http://172.105.168.35:8000/health"
+  "url": "http://YOUR_SERVER_IP:8000/health"
 }
 ```
 
@@ -92,11 +92,11 @@
 ```json
 {
   "method": "GET",
-  "url": "http://172.105.168.35:8000/mcp/capabilities"
+  "url": "http://YOUR_SERVER_IP:8000/mcp/capabilities"
 }
 ```
 
 ---
 
-**Note**: Replace `172.105.168.35` with your actual Linode server IP if different.
+**Note**: Replace `YOUR_SERVER_IP` with your actual server IP address.
 All existing MCP tools and resources are available through these endpoints.
