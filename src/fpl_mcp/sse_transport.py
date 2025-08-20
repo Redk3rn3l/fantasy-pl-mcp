@@ -126,7 +126,7 @@ class MCPSSETransport:
 
 async def main_sse():
     """Run MCP server with SSE transport"""
-    from . import mcp
+    from .__main__ import mcp
     
     sse_transport = MCPSSETransport(mcp)
     sse_transport.run()
