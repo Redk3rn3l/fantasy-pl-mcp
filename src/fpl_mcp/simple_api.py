@@ -6,7 +6,7 @@ import asyncio
 import json
 import logging
 import subprocess
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -82,12 +82,12 @@ async def root():
         "description": "Easy HTTP API for Fantasy Premier League data",
         "endpoints": {
             "health": "/health",
-            "fixtures": "/fixtures",
-            "teams": "/teams", 
-            "players": "/players",
-            "standings": "/standings",
-            "player_details": "/player/{player_id}",
-            "team_details": "/team/{team_id}"
+            "gameweek": "/gameweek",
+            "players": "/players", 
+            "player_analysis": "/player/{player_name}/analysis",
+            "blank_gameweeks": "/blank-gameweeks",
+            "double_gameweeks": "/double-gameweeks",
+            "compare_players": "/compare-players"
         }
     }
 
@@ -96,66 +96,83 @@ async def health_check():
     """Health check"""
     return {"status": "healthy", "service": "fpl-simple-api"}
 
-@app.get("/fixtures")
-async def get_fixtures(gameweek: Optional[int] = Query(None, description="Specific gameweek")):
-    """Get fixtures data"""
+@app.get("/gameweek")
+async def get_gameweek_status():
+    """Get current gameweek status"""
     try:
-        args = {"gameweek": gameweek} if gameweek else {}
-        response = await fpl_api.call_mcp_tool("get_fixtures", args)
+        response = await fpl_api.call_mcp_tool("get_gameweek_status")
         return response.get("result", response)
     except Exception as e:
-        logger.error(f"Error getting fixtures: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/teams")
-async def get_teams():
-    """Get all teams"""
-    try:
-        response = await fpl_api.call_mcp_tool("get_teams")
-        return response.get("result", response)
-    except Exception as e:
-        logger.error(f"Error getting teams: {e}")
+        logger.error(f"Error getting gameweek status: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/players")
-async def get_players(position: Optional[str] = Query(None, description="Filter by position")):
-    """Get players data"""
+async def analyze_players(
+    position: Optional[str] = Query(None, description="Filter by position"),
+    team: Optional[str] = Query(None, description="Filter by team"),
+    min_price: Optional[float] = Query(None, description="Minimum price"),
+    max_price: Optional[float] = Query(None, description="Maximum price"),
+    limit: Optional[int] = Query(20, description="Number of players to return")
+):
+    """Get and analyze players"""
     try:
-        args = {"position": position} if position else {}
-        response = await fpl_api.call_mcp_tool("get_players", args)
+        args = {
+            "position": position,
+            "team": team,
+            "min_price": min_price,
+            "max_price": max_price,
+            "limit": limit
+        }
+        # Remove None values
+        args = {k: v for k, v in args.items() if v is not None}
+        
+        response = await fpl_api.call_mcp_tool("analyze_players", args)
         return response.get("result", response)
     except Exception as e:
-        logger.error(f"Error getting players: {e}")
+        logger.error(f"Error analyzing players: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/standings")
-async def get_standings():
-    """Get league standings"""
+@app.get("/player/{player_name}/analysis")
+async def analyze_player_fixtures(player_name: str, num_fixtures: Optional[int] = Query(5, description="Number of fixtures")):
+    """Analyze player fixtures"""
     try:
-        response = await fpl_api.call_mcp_tool("get_standings")
+        response = await fpl_api.call_mcp_tool("analyze_player_fixtures", {
+            "player_name": player_name,
+            "num_fixtures": num_fixtures
+        })
         return response.get("result", response)
     except Exception as e:
-        logger.error(f"Error getting standings: {e}")
+        logger.error(f"Error analyzing player fixtures: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/player/{player_id}")
-async def get_player_details(player_id: int):
-    """Get specific player details"""
+@app.get("/blank-gameweeks")
+async def get_blank_gameweeks(num_gameweeks: Optional[int] = Query(5, description="Number of gameweeks to check")):
+    """Get blank gameweeks"""
     try:
-        response = await fpl_api.call_mcp_tool("get_player_details", {"player_id": player_id})
+        response = await fpl_api.call_mcp_tool("get_blank_gameweeks", {"num_gameweeks": num_gameweeks})
         return response.get("result", response)
     except Exception as e:
-        logger.error(f"Error getting player details: {e}")
+        logger.error(f"Error getting blank gameweeks: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/team/{team_id}")
-async def get_team_details(team_id: int):
-    """Get specific team details"""
+@app.get("/double-gameweeks")
+async def get_double_gameweeks(num_gameweeks: Optional[int] = Query(5, description="Number of gameweeks to check")):
+    """Get double gameweeks"""
     try:
-        response = await fpl_api.call_mcp_tool("get_team_details", {"team_id": team_id})
+        response = await fpl_api.call_mcp_tool("get_double_gameweeks", {"num_gameweeks": num_gameweeks})
         return response.get("result", response)
     except Exception as e:
-        logger.error(f"Error getting team details: {e}")
+        logger.error(f"Error getting double gameweeks: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/compare-players")
+async def compare_players(player_names: List[str]):
+    """Compare multiple players"""
+    try:
+        response = await fpl_api.call_mcp_tool("compare_players", {"player_names": player_names})
+        return response.get("result", response)
+    except Exception as e:
+        logger.error(f"Error comparing players: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 def run_simple_api():
