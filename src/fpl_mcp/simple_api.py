@@ -47,9 +47,35 @@ class FPLSimpleAPI:
         if not self.mcp_process or not self.mcp_process.stdin:
             raise Exception("MCP process not available")
         
-        request = {
+        # Initialize request first
+        init_request = {
             "jsonrpc": "2.0",
             "id": 1,
+            "method": "initialize",
+            "params": {
+                "protocolVersion": "2024-11-05",
+                "capabilities": {},
+                "clientInfo": {
+                    "name": "simple-api",
+                    "version": "1.0.0"
+                }
+            }
+        }
+        
+        # Send initialization
+        init_json = json.dumps(init_request) + "\n"
+        self.mcp_process.stdin.write(init_json.encode())
+        await self.mcp_process.stdin.drain()
+        
+        # Read init response
+        if self.mcp_process.stdout:
+            init_response_line = await self.mcp_process.stdout.readline()
+            logger.info(f"Init response: {init_response_line.decode().strip()}")
+        
+        # Send tool call request
+        request = {
+            "jsonrpc": "2.0",
+            "id": 2,
             "method": "tools/call",
             "params": {
                 "name": tool_name,
@@ -66,6 +92,7 @@ class FPLSimpleAPI:
         if self.mcp_process.stdout:
             response_line = await self.mcp_process.stdout.readline()
             response = json.loads(response_line.decode().strip())
+            logger.info(f"Tool response: {response}")
             return response
         
         raise Exception("No response from MCP process")

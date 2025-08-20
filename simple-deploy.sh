@@ -49,7 +49,7 @@ User=root
 WorkingDirectory=/opt/mcp-server
 Environment=PATH=/opt/mcp-server/venv/bin
 EnvironmentFile=/opt/mcp-server/.env
-ExecStart=/opt/mcp-server/venv/bin/fpl-mcp-api
+ExecStart=/opt/mcp-server/venv/bin/fpl-mcp-direct
 Restart=always
 RestartSec=10
 

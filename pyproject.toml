@@ -59,6 +59,7 @@ fpl-mcp-tcp = "fpl_mcp.tcp_bridge:run_tcp_bridge"
 fpl-mcp-http = "fpl_mcp.http_mcp_server:run_http_server"
 fpl-mcp-n8n = "fpl_mcp.n8n_bridge:run_n8n_bridge"
 fpl-mcp-api = "fpl_mcp.simple_api:run_simple_api"
+fpl-mcp-direct = "fpl_mcp.direct_api:run_direct_api"
 
 [project.urls]
 Homepage = "https://github.com/rishijatia/fantasy-pl-mcp"
