@@ -19,14 +19,11 @@ ufw --force enable
 ufw allow ssh
 ufw allow 8000/tcp
 
-# Create project directory
-echo "📁 Creating project directory..."
+# Create project directory and copy current files
+echo "📁 Setting up project directory..."
 mkdir -p /opt/mcp-server
+cp -r . /opt/mcp-server/
 cd /opt/mcp-server
-
-# Clone repository
-echo "📥 Cloning repository..."
-git clone https://github.com/your-username/fantasy-pl-mcp.git .
 
 # Setup Python environment
 echo "🐍 Setting up Python environment..."
